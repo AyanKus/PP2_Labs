@@ -1,15 +1,13 @@
 class ConsoleIO:
-    line: str = "None"
 
-    def getString():
-        return input("Please, write something!")
+    def getString(self):
+        return input("Please, write something here: ")
     
-    def printString():
+    def printString(self, line: str):
         return print(line.upper())
     
-consoleIO = ConsoleIO()
-consoleIO.getString()
-consoleIO.printString()
 
-print("LOL!")
-    
+consoleIO = ConsoleIO()
+
+line = consoleIO.getString()
+consoleIO.printString(line)    
