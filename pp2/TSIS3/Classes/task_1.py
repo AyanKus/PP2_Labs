@@ -5,9 +5,4 @@ class ConsoleIO:
     
     def printString(self, line: str):
         return print(line.upper())
-    
-
-consoleIO = ConsoleIO()
-
-line = consoleIO.getString()
-consoleIO.printString(line)    
+       
