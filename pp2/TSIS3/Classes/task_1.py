@@ -6,3 +6,6 @@ class ConsoleIO:
     def printString(self, line: str):
         return print(line.upper())
        
+con = ConsoleIO()
+line = con.getString()
+con.printString(line)
