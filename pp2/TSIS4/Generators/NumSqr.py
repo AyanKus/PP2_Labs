@@ -1,5 +1,5 @@
 def fun(num):
-    i =1
+    i = 1
     while i <= num:
         yield i**2
         i +=1

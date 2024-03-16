@@ -6,4 +6,4 @@ def fun(num):
 
 N = int(input())
 for i in fun(N):
-    print(i, end = " ")
+    print(i, " ")

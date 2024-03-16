@@ -12,3 +12,4 @@ my_string = input()
 upper, lower = count_upper_lower(my_string)
 print(f"Upper case: {upper}")  
 print(f"Lower case: {lower}")  
+
