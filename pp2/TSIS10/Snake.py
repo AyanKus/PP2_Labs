@@ -1,7 +1,6 @@
 import random
 import pygame
 import sys
-import time
 
 pygame.init()
 pygame.font.init()
@@ -12,7 +11,7 @@ BLOCK_SIZE = 40
 SCREEN = pygame.display.set_mode((SW, SH + 40))
 
 CLOCK = pygame.time.Clock()
-FONT = pygame.font.Font("OneDrive\Рабочий стол\Study\Ayan\PP2_Labs\pp2\TSIS9\lol.ttf", BLOCK_SIZE)
+FONT = pygame.font.Font("TSIS9/font.ttf", BLOCK_SIZE)
 
 RED = (255, 0, 0)
 BLACK = (0, 0, 0)
@@ -30,32 +29,8 @@ class Snake():
     def __init__(self):
         self.body = [
             SnakeST(
-                x=SW // BLOCK_SIZE // 2,
-                y=SH // BLOCK_SIZE // 2,
-            ),
-            SnakeST(
-                x=SW // BLOCK_SIZE // 2 - 1,
-                y=SH // BLOCK_SIZE // 2,
-            ),
-            SnakeST(
-                x=SW // BLOCK_SIZE // 2 - 2,
-                y=SH // BLOCK_SIZE // 2,
-            ),
-            SnakeST(
-                x=SW // BLOCK_SIZE // 2 - 3,
-                y=SH // BLOCK_SIZE // 2,
-            ),
-            SnakeST(
-                x=SW // BLOCK_SIZE // 2 - 4,
-                y=SH // BLOCK_SIZE // 2,
-            ),
-            SnakeST(
-                x=SW // BLOCK_SIZE // 2 - 5,
-                y=SH // BLOCK_SIZE // 2,
-            ),
-            SnakeST(
-                x=SW // BLOCK_SIZE // 2 - 6,
-                y=SH // BLOCK_SIZE // 2,
+                x = SW // BLOCK_SIZE // 2,
+                y = SH // BLOCK_SIZE // 2,
             ),
         ]
 
@@ -106,24 +81,22 @@ class Snake():
         elif self.body[0].y >= SH // BLOCK_SIZE:
             game_over()
 
-    def check_collision(self, apple):
-        if apple.location.x != self.body[0].x:
+    def check_collision(self, food):
+        if food.location.x != self.body[0].x:
             return False
-        if apple.location.y != self.body[0].y:
+        if food.location.y != self.body[0].y:
             return False
         return True
 
 
 class Apple:
     def __init__(self, x, y):
-        self.color = RED
-        self.weight = 1
         self.location = SnakeST(x, y)
 
     def draw(self):
         pygame.draw.rect(
             SCREEN,
-            self.color,
+            RED,
             pygame.Rect(
                 self.location.x * BLOCK_SIZE,
                 self.location.y * BLOCK_SIZE,
@@ -135,9 +108,6 @@ class Apple:
     def generate_new(self, snake_body):
         self.location.x = random.randint(0, SW // BLOCK_SIZE - 1)
         self.location.y = random.randint(0, SH // BLOCK_SIZE - 1)
-        self.weight = random.randint(1, 3)
-        self.color = 200 - (self.weight - 1) * 100
-        self.color = 200 - (self.weight - 1) * 100
         for idx in range(len(snake_body) - 1, 0, -1):
             if self.location.x == snake_body[idx].x and self.location.y == snake_body[idx].y:
                 self.location.x = random.randint(0, SW // BLOCK_SIZE - 1)
@@ -165,16 +135,13 @@ def main():
     snake = Snake()
     apple = Apple(5, 5)
     dx = 0
-    dy = -1
+    dy = 0
     movin = ''
     score = 0
     LVL = 0
-    spawn = time.perf_counter()
-    dispawn = 0
-
-    snake.move(dx,dy)
 
     while True:
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -199,21 +166,15 @@ def main():
         snake.move(dx, dy)
 
         if snake.check_collision(apple):
-            spawn = time.perf_counter()
-            score += 5
+            score += 1
             LVL = score // 5
-            dispawn += apple.weight
-            apple.generate_new(snake.body)
-            snake.body.pop()
-            dispawn -= 1
-        elif dispawn > 0:
-            dispawn -= 1
-            apple.generate_new(snake.body)
-        
 
-        if time.perf_counter() - spawn > 5:
-            spawn = time.perf_counter()
             apple.generate_new(snake.body)
+            snake.body.append(
+                SnakeST(snake.body[-1].x, snake.body[-1].y)
+            )
+
+        if len(snake.body) == 1: movin = ''
 
         score_show = FONT.render('Score: ' + str(score), True, WHITE)
         level_show = FONT.render('LVL: ' + str(LVL), True, WHITE)

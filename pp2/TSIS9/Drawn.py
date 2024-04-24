@@ -9,6 +9,9 @@ SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 BLACK = pygame.Color(0, 0, 0)
 WHITE = pygame.Color(255, 255, 255)
 GRAY = pygame.Color(127, 127, 127)
+GREEN = pygame.Color(0, 255, 0)
+RED = pygame.Color(255, 0, 0)
+BLUE = pygame.Color(0, 0, 255)
 
 
 class GameObject:
@@ -32,7 +35,7 @@ class Button(pygame.sprite.Sprite):
 
 
 class Pen(GameObject):
-    def __init__(self, start_pos, thickness=5, color=WHITE):
+    def __init__(self, start_pos, thickness=5, color=GREEN):
         self.thickness = thickness
         self.color = color
         self.points = []
@@ -162,16 +165,40 @@ def main():
     switch_triangleR = Button(Points_RT)
     switch_triangleW = Button(Points_EqT)
     switch_rhombus = Button(Points_rh)
-    buttons = [switch_pen, switch_square, switch_triangleR, switch_triangleW, switch_rhombus, ]
+    buttons = [switch_pen, switch_square, switch_triangleR, switch_triangleW, switch_rhombus ]
     current_shape = 'pen'
     objects = []
     active_obj = None
     running = True
+
+    penColor = WHITE
+    penThickness = 6
+
     while running:
         SCREEN.fill(BLACK)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
+            if event.type==pygame.KEYDOWN:
+                if event.key==pygame.K_1:
+                    penColor = WHITE
+                    penThickness = 6
+                if event.key==pygame.K_2:
+                    penColor = GRAY
+                    penThickness = 6
+                if event.key==pygame.K_3:
+                    penColor = RED
+                    penThickness = 6
+                if event.key==pygame.K_4:
+                    penColor = GREEN
+                    penThickness = 6
+                if event.key==pygame.K_5:
+                    penColor = BLUE
+                    penThickness = 6
+                if event.key==pygame.K_6:
+                    penColor = BLACK  
+                    penThickness = 60 
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 buttons_dict = {
@@ -179,18 +206,18 @@ def main():
                     switch_square: 'square',
                     switch_triangleR: 'rightT',
                     switch_triangleW: 'wrongT',
-                    switch_rhombus: 'rhombus',
+                    switch_rhombus: 'rhombus'
                 }
                 for key in buttons_dict.keys():
                     if key.rect.collidepoint(pygame.mouse.get_pos()):
                         current_shape = buttons_dict[key]
                 else:
                     shapes = {
-                        'pen': Pen(start_pos=event.pos),
-                        'square': Rectangle(start_pos=event.pos),
-                        'rightT': RightTriangle(start_pos=event.pos),
-                        'wrongT': EquilateralTriangle(start_pos=event.pos),
-                        'rhombus': Rhombus(start_pos=event.pos),
+                        'pen': Pen(start_pos=event.pos, color=penColor, thickness=penThickness),
+                        'square': Rectangle(start_pos=event.pos, color=penColor, thickness=penThickness),
+                        'rightT': RightTriangle(start_pos=event.pos, color=penColor, thickness=penThickness),
+                        'wrongT': EquilateralTriangle(start_pos=event.pos, color=penColor, thickness=penThickness),
+                        'rhombus': Rhombus(start_pos=event.pos, color=penColor, thickness=penThickness)
                     }
                     active_obj = shapes[current_shape]
 

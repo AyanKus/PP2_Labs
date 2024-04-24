@@ -24,7 +24,7 @@ game_over = font.render("Game Over", True, BLACK)
  
 background = pygame.image.load("OneDrive\Рабочий стол\Study\Ayan\PP2_Labs\pp2\TSIS9\Road.png")
  
-DISPLAYSURF = pygame.display.set_mode((400,600))
+DISPLAYSURF = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
 DISPLAYSURF.fill(WHITE)
 pygame.display.set_caption("Game")
  
